@@ -117,60 +117,6 @@ async function run() {
       res.send(cursor);
     });
 
-
-    //   };
-    //   const filter = { _id: new ObjectId(id) };
-    //   const result = await blogCollection.findOne(filter, options);
-    //   res.send(result);
-    // });
-
-    // app.patch("/blogs/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   console.log(id);
-    //   const filter = { _id: new ObjectId(id) };
-    //   const updatedbody = req.body;
-    //   console.log(updatedbody);
-    //   const updateDoc = {
-    //     $set: {
-    //       title: updatedbody.title,
-    //       image: updatedbody.image,
-    //       shortdes: updatedbody.shortdes,
-    //       category: updatedbody.category,
-    //       longdes: updatedbody.longdes,
-    //     },
-    //   };
-    //   const result = await blogCollection.updateOne(filter, updateDoc);
-    //   res.send(result);
-    // });
-
-    // blog
-
-    // app.get("/blog/:email", async (req, res) => {
-    //   const email = req.params.email;
-    //   const filter = { userEmail: email };
-    //   const result = await bgCollection.find(filter).toArray();
-    //   res.send(result);
-    // });
-
-    // app.get("/blog", async (req, res) => {
-    //   const cursor = bgCollection.find();
-    //   const result = await cursor.toArray();
-    //   res.send(result);
-    // });
-
-    // app.post("/blog", async (req, res) => {
-    //   const blog = req.body;
-    //   const result = await bgCollection.insertOne(blog);
-    //   res.send(result);
-    // });
-
-    // app.delete("/blog/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) };
-    //   const result = await bgCollection.deleteOne(query);
-    //   res.send(result);
-    // });
-
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -222,7 +168,7 @@ app.listen(port, () => {
 //     deprecationErrors: true,
 //   }
 // });
-
+// ada
 // async function run() {
 //   try {
 //     await client.connect();
