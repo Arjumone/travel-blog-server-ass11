@@ -33,7 +33,7 @@ async function run() {
     const blogCollection = client.db("blogDB").collection("blogs");
     const bgCollection = client.db("blogDB").collection("blog");
 
-    // blogs related api
+    // blogs related apiii
 
     app.get("/blogs", async (req, res) => {
       const cursor = blogCollection.find();
