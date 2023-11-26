@@ -288,12 +288,4 @@ app.listen(port, () => {
 //     // await client.close();
 //   }
 // }
-// run().catch(console.dir);
 
-// app.get('/', (req,res)=>{
-//     res.send('coming from get blog')
-// })
-
-// app.listen(port, ()=>{
-//     console.log(coming from port ${port})
-// })
