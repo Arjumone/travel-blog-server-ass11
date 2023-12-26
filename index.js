@@ -31,6 +31,7 @@ async function run() {
     const blogCollection = client.db("blogDB").collection("blogs");
     const wishlistcollection = client.db("blogDB").collection("wishlist");
     const detailsCollection = client.db("blogDB").collection("details");
+    const commentsCollection = client.db("blogDB").collection("comments");
 
     app.get("/blogs", async (req, res) => {
       const cursor = await blogCollection.find().toArray();
@@ -77,28 +78,62 @@ async function run() {
     });
 
     // wishlist
+   
     app.post("/wishlist/:email", async (req, res) => {
-      const userEmail = req.params.email;
-      const { blog } = req.body;
-      const wishlistItem = {
-        userEmail,
-        blog,
-      };
-      const result = await wishlistcollection.insertOne(wishlistItem);
-      res.send(result);
+        const userEmail = req.params.email;
+        const { blog } = req.body;
+        const wishlistItem = {
+          userEmail,
+          blog,
+        };
+        const result = await wishlistcollection.insertOne(wishlistItem);
+        res.send(result);
+      
     });
-
-    app.get("/wishlist", async (req, res) => {
-      const cursor = await wishlistcollection.find().toArray();
-      res.send(cursor);
+    
+    app.get("/wishlist/:email", async (req, res) => {
+        const userEmail = req.params.email;
+        const cursor = await wishlistcollection.find({ userEmail }).toArray();
+        res.send(cursor);
     });
-
+    
     app.delete("/wishlist/:id", async (req, res) => {
-      const id = req.params.id;
-      const filter = { _id: new ObjectId(id) };
-      const result = await wishlistcollection.deleteOne(filter);
-      res.send(result);
+        const id = req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const result = await wishlistcollection.deleteOne(filter);
+        res.send(result);
     });
+    
+
+    // all blogs
+    app.post("/blogs", async (req, res) => {
+        const blogData = req.body;
+        const result = await blogCollection.insertOne(blogData);
+        res.send(result);
+    });
+
+    app.get('/blogs', async (req, res) => {
+        const allBlogs = await blogCollection.find().toArray();
+        res.json(allBlogs);
+    });
+    
+    app.get('/blogs/:title', async (req, res) => {
+        const title = req.params.title;
+    
+        // Check if title is an empty string
+        if (title.trim() === '') {
+          const allBlogs = await blogCollection.find().toArray();
+          res.send(allBlogs);
+        } else {
+          const regex = new RegExp(title, 'i');
+          const filteredBlogs = await blogCollection.find({
+            title: { $regex: regex },
+          }).toArray();
+    
+          res.send(filteredBlogs);
+        }
+    });
+    
 
     // details
     app.post("/details/:email", async (req, res) => {
@@ -112,9 +147,30 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/details", async (req, res) => {
-      const cursor = await detailsCollection.find().toArray();
-      res.send(cursor);
+    app.get('/details/:email', async (req, res) => {
+        const { email } = req.params;
+        const details = await detailsCollection.find({ userEmail: email }).toArray();
+        res.send(details);
+    });
+
+    // comments
+
+    app.post("/comments", async (req, res) => {
+        const newComment = req.body;
+        const result = await commentsCollection.insertOne(newComment);
+        res.send(result);
+    });
+
+    // features
+
+    app.get("/blogs", async (req, res) => {
+        const topBlogs = await blogCollection
+          .find()
+          .sort({ "longDescription.length": -1 })
+          .limit(10)
+          .toArray();
+    
+        res.send(topBlogs);
     });
 
     // Send a ping to confirm a successful connection
