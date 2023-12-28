@@ -81,13 +81,6 @@ app.post("/wishlist", async (req, res) => {
       res.send(result);
     });
 
-    // all blogs
-    // app.post("/blogs", async (req, res) => {
-    //   const blogData = req.body;
-    //   const result = await blogCollection.insertOne(blogData);
-    //   res.send(result);
-    // });
-
     app.get('/blogs', async (req, res) => {
         const blogs = await blogCollection.find({}).toArray();
         res.send(blogs);
@@ -110,10 +103,8 @@ app.post("/wishlist", async (req, res) => {
 
     // details done
     app.post("/details", async (req, res) => {
-        // const userEmail = req.params.email;
         const { blog } = req.body;
         const detailsItem = {
-          
           blog,
         };
         const result = await detailsCollection.insertOne(detailsItem);
@@ -139,12 +130,14 @@ app.post("/wishlist", async (req, res) => {
     });
 
     // features 
-    app.get("/blogs", async (req, res) => {
-        const topBlogs = await blogCollection
+    app.get('/top-posts', async (req, res) => {
+        const topPosts = await blogCollection
           .find()
-          .sort({ "longDescription.length": -1 })
+          .sort({ longDescription: -1 })
+          .limit(10) 
           .toArray();
-        res.send(topBlogs);
+    
+        res.send(topPosts);
     });
 
     // update done
